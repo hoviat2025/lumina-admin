@@ -203,10 +203,10 @@ const UserManagement = () => {
                   <h3 className="font-bold text-charcoal text-sm truncate w-full">
                     {user.first_name} {user.last_name}
                   </h3>
-                  <p className="text-xs text-silver mt-1 font-mono" dir="ltr">
+                  <p className="text-xs text-charcoal mt-1 font-mono" dir="ltr">
                     {user.user_id}
                   </p>
-                  <p className="text-xs text-silver mt-1">{user.country}</p>
+                  <p className="text-xs text-charcoal mt-1">{user.country}</p>
                 </GlassBox>
               </div>
             ))}
@@ -274,7 +274,7 @@ const UserManagement = () => {
         onClose={() => setIsFilterOpen(false)}
         title="جست و جو و فیلتر"
       >
-        <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+        <div className="space-y-4 max-h-[60vh] overflow-y-auto overscroll-contain">
           <div className="space-y-2">
             <label className="text-sm font-medium text-silver">نام کاربر</label>
             <Input

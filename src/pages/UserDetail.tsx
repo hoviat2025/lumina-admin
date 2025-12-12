@@ -228,7 +228,7 @@ const UserDetail = () => {
         onClose={() => setIsEditOpen(false)}
         title="ویرایش اطلاعات"
       >
-        <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+        <div className="space-y-4 max-h-[60vh] overflow-y-auto overscroll-contain">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
               <label className="text-sm font-medium text-silver">نام</label>
