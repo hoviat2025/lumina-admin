@@ -21,8 +21,12 @@ const UserManagement = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
     name: "",
+    userId: "",
+    username: "",
+    phoneNumber: "",
     country: "",
     isBanned: "",
+    isRegistered: "",
   });
   const navigate = useNavigate();
   const { token } = useAuth();
@@ -77,6 +81,24 @@ const UserManagement = () => {
       );
     }
 
+    if (filters.userId) {
+      result = result.filter((user) =>
+        user.user_id.includes(filters.userId)
+      );
+    }
+
+    if (filters.username) {
+      result = result.filter((user) =>
+        user.username.toLowerCase().includes(filters.username.toLowerCase())
+      );
+    }
+
+    if (filters.phoneNumber) {
+      result = result.filter((user) =>
+        user.phone_number?.includes(filters.phoneNumber)
+      );
+    }
+
     if (filters.country) {
       result = result.filter((user) =>
         user.country.includes(filters.country)
@@ -88,12 +110,17 @@ const UserManagement = () => {
       result = result.filter((user) => user.is_ban === isBanned);
     }
 
+    if (filters.isRegistered) {
+      const isRegistered = filters.isRegistered === "true";
+      result = result.filter((user) => user.is_registered === isRegistered);
+    }
+
     setFilteredUsers(result);
     setIsFilterOpen(false);
   };
 
   const clearFilters = () => {
-    setFilters({ name: "", country: "", isBanned: "" });
+    setFilters({ name: "", userId: "", username: "", phoneNumber: "", country: "", isBanned: "", isRegistered: "" });
     setFilteredUsers(users);
     setIsFilterOpen(false);
   };
@@ -247,19 +274,51 @@ const UserManagement = () => {
         onClose={() => setIsFilterOpen(false)}
         title="جست و جو و فیلتر"
       >
-        <div className="space-y-4">
+        <div className="space-y-4 max-h-[60vh] overflow-y-auto">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-silver">
-              نام کاربر
-            </label>
+            <label className="text-sm font-medium text-silver">نام کاربر</label>
             <Input
               type="text"
               value={filters.name}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, name: e.target.value }))
-              }
+              onChange={(e) => setFilters((prev) => ({ ...prev, name: e.target.value }))}
               placeholder="جست و جو بر اساس نام"
               className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-silver">شناسه کاربر</label>
+            <Input
+              type="text"
+              value={filters.userId}
+              onChange={(e) => setFilters((prev) => ({ ...prev, userId: e.target.value }))}
+              placeholder="جست و جو بر اساس شناسه"
+              className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
+              dir="ltr"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-silver">نام کاربری</label>
+            <Input
+              type="text"
+              value={filters.username}
+              onChange={(e) => setFilters((prev) => ({ ...prev, username: e.target.value }))}
+              placeholder="جست و جو بر اساس نام کاربری"
+              className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
+              dir="ltr"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-silver">شماره تلفن</label>
+            <Input
+              type="text"
+              value={filters.phoneNumber}
+              onChange={(e) => setFilters((prev) => ({ ...prev, phoneNumber: e.target.value }))}
+              placeholder="جست و جو بر اساس شماره"
+              className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
+              dir="ltr"
             />
           </div>
 
@@ -268,44 +327,45 @@ const UserManagement = () => {
             <Input
               type="text"
               value={filters.country}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, country: e.target.value }))
-              }
+              onChange={(e) => setFilters((prev) => ({ ...prev, country: e.target.value }))}
               placeholder="فیلتر بر اساس کشور"
               className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-silver">
-              وضعیت بن
-            </label>
-            <select
-              value={filters.isBanned}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, isBanned: e.target.value }))
-              }
-              className="w-full h-10 px-3 bg-secondary/50 border border-silver-light/50 text-charcoal rounded-xl"
-            >
-              <option value="">همه</option>
-              <option value="true">بن شده</option>
-              <option value="false">فعال</option>
-            </select>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-silver">وضعیت بن</label>
+              <select
+                value={filters.isBanned}
+                onChange={(e) => setFilters((prev) => ({ ...prev, isBanned: e.target.value }))}
+                className="w-full h-10 px-3 bg-secondary/50 border border-silver-light/50 text-charcoal rounded-xl"
+              >
+                <option value="">همه</option>
+                <option value="true">بن شده</option>
+                <option value="false">فعال</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-silver">وضعیت ثبت‌نام</label>
+              <select
+                value={filters.isRegistered}
+                onChange={(e) => setFilters((prev) => ({ ...prev, isRegistered: e.target.value }))}
+                className="w-full h-10 px-3 bg-secondary/50 border border-silver-light/50 text-charcoal rounded-xl"
+              >
+                <option value="">همه</option>
+                <option value="true">ثبت‌نام شده</option>
+                <option value="false">ثبت‌نام نشده</option>
+              </select>
+            </div>
           </div>
 
           <div className="flex gap-3 pt-4">
-            <Button
-              variant="gold"
-              className="flex-1 rounded-xl"
-              onClick={applyFilters}
-            >
+            <Button variant="gold" className="flex-1 rounded-xl" onClick={applyFilters}>
               اعمال فیلتر
             </Button>
-            <Button
-              variant="outline"
-              className="rounded-xl"
-              onClick={clearFilters}
-            >
+            <Button variant="outline" className="rounded-xl" onClick={clearFilters}>
               پاک کردن
             </Button>
           </div>
