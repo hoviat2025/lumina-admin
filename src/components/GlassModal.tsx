@@ -30,13 +30,16 @@ export const GlassModal = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-modal animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal/40 animate-fade-in"
+      style={{ backdropFilter: 'blur(12px)' }}
       onClick={onClose}
     >
       <div
         className={cn(
-          "glass-intense w-full max-w-lg max-h-[85vh] overflow-auto rounded-3xl p-6 animate-scale-in"
+          "w-full max-w-lg max-h-[85vh] overflow-auto rounded-3xl p-6 animate-scale-in",
+          "bg-white/95 border border-white shadow-2xl"
         )}
+        style={{ direction: 'rtl' }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
@@ -50,7 +53,9 @@ export const GlassModal = ({
             <X className="h-5 w-5 text-charcoal" />
           </button>
         </div>
-        {children}
+        <div className="text-charcoal">
+          {children}
+        </div>
       </div>
     </div>
   );
