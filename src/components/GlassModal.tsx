@@ -30,14 +30,14 @@ export const GlassModal = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal/40 animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal/40"
       style={{ backdropFilter: 'blur(12px)' }}
       onClick={onClose}
     >
       <div
         className={cn(
-          "w-full max-w-lg max-h-[85vh] overflow-auto rounded-3xl p-6 animate-scale-in",
-          "bg-white/95 border border-white shadow-2xl"
+          "w-full max-w-lg max-h-[85vh] rounded-3xl p-6",
+          "bg-white border border-white/80 shadow-2xl"
         )}
         style={{ direction: 'rtl' }}
         onClick={(e) => e.stopPropagation()}
