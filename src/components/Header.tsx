@@ -19,8 +19,8 @@ export const Header = () => {
   };
 
   return (
-    <header className="glass-intense sticky top-0 z-50 px-6 py-4">
-      <div className="container mx-auto flex items-center justify-between">
+    <div className="sticky top-0 z-50 px-4 py-3">
+      <header className="glass-intense container mx-auto flex items-center justify-between px-6 py-4 rounded-2xl">
         <Button
           variant="ghost"
           size="icon"
@@ -44,7 +44,7 @@ export const Header = () => {
         >
           <Home className="h-5 w-5 text-charcoal" />
         </Button>
-      </div>
-    </header>
+      </header>
+    </div>
   );
 };

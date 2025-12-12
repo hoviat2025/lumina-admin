@@ -20,7 +20,13 @@ const UserDetail = () => {
     first_name: "",
     last_name: "",
     nickname: "",
+    username: "",
+    phone_number: "",
+    whatsapp_number: "",
     country: "",
+    score: 0,
+    is_ban: false,
+    is_registered: true,
   });
   const { token } = useAuth();
   const { toast } = useToast();
@@ -50,7 +56,13 @@ const UserDetail = () => {
             first_name: foundUser.first_name,
             last_name: foundUser.last_name,
             nickname: foundUser.nickname,
+            username: foundUser.username,
+            phone_number: foundUser.phone_number || "",
+            whatsapp_number: foundUser.whatsapp_number || "",
             country: foundUser.country,
+            score: foundUser.score,
+            is_ban: foundUser.is_ban,
+            is_registered: foundUser.is_registered,
           });
         }
       }
@@ -216,31 +228,27 @@ const UserDetail = () => {
         onClose={() => setIsEditOpen(false)}
         title="ویرایش اطلاعات"
       >
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-silver">نام</label>
-            <Input
-              type="text"
-              value={editData.first_name}
-              onChange={(e) =>
-                setEditData((prev) => ({ ...prev, first_name: e.target.value }))
-              }
-              className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
-            />
-          </div>
+        <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-silver">نام</label>
+              <Input
+                type="text"
+                value={editData.first_name}
+                onChange={(e) => setEditData((prev) => ({ ...prev, first_name: e.target.value }))}
+                className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-silver">
-              نام خانوادگی
-            </label>
-            <Input
-              type="text"
-              value={editData.last_name}
-              onChange={(e) =>
-                setEditData((prev) => ({ ...prev, last_name: e.target.value }))
-              }
-              className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
-            />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-silver">نام خانوادگی</label>
+              <Input
+                type="text"
+                value={editData.last_name}
+                onChange={(e) => setEditData((prev) => ({ ...prev, last_name: e.target.value }))}
+                className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -248,11 +256,44 @@ const UserDetail = () => {
             <Input
               type="text"
               value={editData.nickname}
-              onChange={(e) =>
-                setEditData((prev) => ({ ...prev, nickname: e.target.value }))
-              }
+              onChange={(e) => setEditData((prev) => ({ ...prev, nickname: e.target.value }))}
               className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
             />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-silver">نام کاربری</label>
+            <Input
+              type="text"
+              value={editData.username}
+              onChange={(e) => setEditData((prev) => ({ ...prev, username: e.target.value }))}
+              className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
+              dir="ltr"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-silver">شماره تلفن</label>
+              <Input
+                type="text"
+                value={editData.phone_number}
+                onChange={(e) => setEditData((prev) => ({ ...prev, phone_number: e.target.value }))}
+                className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
+                dir="ltr"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-silver">شماره واتساپ</label>
+              <Input
+                type="text"
+                value={editData.whatsapp_number || ""}
+                onChange={(e) => setEditData((prev) => ({ ...prev, whatsapp_number: e.target.value }))}
+                className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
+                dir="ltr"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -260,19 +301,50 @@ const UserDetail = () => {
             <Input
               type="text"
               value={editData.country}
-              onChange={(e) =>
-                setEditData((prev) => ({ ...prev, country: e.target.value }))
-              }
+              onChange={(e) => setEditData((prev) => ({ ...prev, country: e.target.value }))}
               className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
             />
           </div>
 
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-silver">امتیاز</label>
+            <Input
+              type="number"
+              value={editData.score}
+              onChange={(e) => setEditData((prev) => ({ ...prev, score: parseInt(e.target.value) || 0 }))}
+              className="bg-secondary/50 border-silver-light/50 text-charcoal rounded-xl"
+              dir="ltr"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-silver">وضعیت بن</label>
+              <select
+                value={editData.is_ban ? "true" : "false"}
+                onChange={(e) => setEditData((prev) => ({ ...prev, is_ban: e.target.value === "true" }))}
+                className="w-full h-10 px-3 bg-secondary/50 border border-silver-light/50 text-charcoal rounded-xl"
+              >
+                <option value="false">فعال</option>
+                <option value="true">بن شده</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-silver">وضعیت ثبت‌نام</label>
+              <select
+                value={editData.is_registered ? "true" : "false"}
+                onChange={(e) => setEditData((prev) => ({ ...prev, is_registered: e.target.value === "true" }))}
+                className="w-full h-10 px-3 bg-secondary/50 border border-silver-light/50 text-charcoal rounded-xl"
+              >
+                <option value="true">ثبت‌نام شده</option>
+                <option value="false">ثبت‌نام نشده</option>
+              </select>
+            </div>
+          </div>
+
           <div className="flex gap-3 pt-4">
-            <Button
-              variant="gold"
-              className="flex-1 rounded-xl"
-              onClick={handleSave}
-            >
+            <Button variant="gold" className="flex-1 rounded-xl" onClick={handleSave}>
               <Check className="w-4 h-4 ml-2" />
               ذخیره تغییرات
             </Button>
